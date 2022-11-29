@@ -1,0 +1,137 @@
+---
+# ----------------------------------------------------------------------------------------------------------------------
+# 核心配置
+# ----------------------------------------------------------------------------------------------------------------------
+spring:
+  application:
+    name: "playground"
+  profiles:
+    active:
+      - dev
+  config:
+    import:
+      - "optional:classpath:/config/config.yml"
+  autoconfigure:
+    exclude: [ ]
+  aop:
+    auto: true
+  main:
+    web-application-type: servlet
+    banner-mode: log
+    allow-bean-definition-overriding: true
+    lazy-initialization: false
+    log-startup-info: true
+    cloud-platform: none
+    register-shutdown-hook: true
+    sources:
+      - "classpath:/config/spring-bean.xml"
+  banner:
+    location: "config/banner.txt"
+  jackson:
+    locale: "zh_CN"
+    time-zone: "Asia/Shanghai"
+    date-format: "yyyy-MM-dd HH:mm:ss.SSS"
+    default-property-inclusion: always
+    serialization:
+      indent-output: true
+      fail-on-self-references: true
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
+      write-null-map-values: true
+      write-empty-json-arrays: true
+      write-single-elem-arrays-unwrapped: false
+      write-enums-using-to-string: true
+    deserialization:
+      fail-on-unknown-properties: false
+  lifecycle:
+    timeout-per-shutdown-phase: "30s"
+  messages:
+    basename: i18n/message,i18n/be
+    use-code-as-default-message: false
+    cache-duration: 3600s
+    fallback-to-system-locale: true
+  jmx:
+    enabled: false
+    unique-names: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: "1GB"
+      max-request-size: "2GB"
+  pid:
+    file: "/var/run/${spring.application.name}/pid"
+    fail-on-write-error: false
+  flyway:
+    enabled: false
+  security:
+    user:
+      name: "root"
+      password: "{noop}root"
+      roles: [ "ROOT", "USER" ]
+
+server:
+  port: 8080
+  ssl:
+    enabled: false
+  servlet:
+    context-path: "/"
+  error:
+    whitelabel:
+      enabled: false
+  compression:
+    enabled: true
+    min-response-size: "1KB"
+  shutdown: graceful
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Actuator
+# ----------------------------------------------------------------------------------------------------------------------
+management:
+  endpoint:
+    shutdown:
+      enabled: false
+    health:
+      enabled: true
+      show-details: always
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include:
+            - "ping"
+            - "livenessStateProbeIndicator"
+        readiness:
+          include:
+            - "ping"
+            - "livenessStateProbeIndicator"
+            - "readinessStateProbeIndicator"
+    env:
+      enabled: true
+    info:
+      enabled: true
+    beans:
+      enabled: true
+  info:
+    git:
+      enabled: true
+      mode: simple
+    env:
+      enabled: false
+    java:
+      enabled: false
+  endpoints:
+    web:
+      base-path: "/actuator"
+      exposure:
+        include: "*"
+    jmx:
+      domain: "com.github.yingzhuo.playground"
+      exposure:
+        include: "*"
+
+info: { }

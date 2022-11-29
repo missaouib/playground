@@ -1,0 +1,10 @@
+# ======================================================================================================================
+# SM2 (国密签名算法)
+# ======================================================================================================================
+sm2-keypair:
+  public-key: |
+    MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAEbm2cGVL5P3ckCGbvWI5YYfU6ZDCFyott6CN9DeRCOQv6xYvb5FxvyNqfj5LGsRgeoVBklCo-82slbPpd
+    XX_i_w==
+  private-key: |
+    MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQgREXcBuQ9qHxg6i0dCHrm10n3f26OzY86dw3n43qaJC-gCgYIKoEcz1UBgi2hRANCAARu
+    bZwZUvk_dyQIZu9Yjlhh9TpkMIXKi23oI30N5EI5C_rFi9vkXG_I2p-PksaxGB6hUGSUKj7zayVs-l1df-L_

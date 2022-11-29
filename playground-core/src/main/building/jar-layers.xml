@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/boot/layers"
+        xsi:schemaLocation="http://www.springframework.org/schema/boot/layers https://www.springframework.org/schema/boot/layers/layers.xsd">
+
+    <!--
+    本文件被maven插件: org.springframework.boot:spring-boot-maven-plugin 使用
+    -->
+
+    <application>
+        <into layer="spring-boot-loader">
+            <include>org/springframework/boot/loader/**</include>
+        </into>
+        <into layer="application"/>
+    </application>
+
+    <dependencies>
+        <into layer="application">
+            <includeModuleDependencies/>
+        </into>
+        <into layer="snapshot-dependencies">
+            <include>*:*:*SNAPSHOT</include>
+        </into>
+        <into layer="spring-turbo">
+            <include>com.github.yingzhuo:spring-turbo*</include>
+        </into>
+        <into layer="dependencies"/>
+    </dependencies>
+
+    <layerOrder>
+        <layer>dependencies</layer>
+        <layer>spring-boot-loader</layer>
+        <layer>snapshot-dependencies</layer>
+        <layer>spring-turbo</layer>
+        <layer>application</layer>
+    </layerOrder>
+
+</layers>

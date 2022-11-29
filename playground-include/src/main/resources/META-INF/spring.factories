@@ -1,0 +1,3 @@
+org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
+com.github.yingzhuo.playground.include.SpringBootAutoConfigSecurityDSL
+org.springframework.boot.diagnostics.FailureAnalyzer=

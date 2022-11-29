@@ -1,0 +1,36 @@
+[Unit]
+Description=playground
+Documentation=https://github.com/yingzhuo/playground
+After=syslog.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile=/opt/playground/playground-env
+ExecStartPre=/bin/mkdir -p ${APPLICATION_TMP_DIR}
+ExecStartPre=/bin/mkdir -p ${APPLICATION_LOG_DIR}
+ExecStartPre=/bin/mkdir -p ${APPLICATION_DATA_DIR}
+ExecStartPre=/bin/mkdir -p ${APPLICATION_EXT_JAR_DIR}
+ExecStartPre=/bin/mkdir -p /etc/playground/
+ExecStartPre=/bin/mkdir -p /etc/playground/lib/
+ExecStart=/usr/local/java-home/bin/java \
+    -Duser.timezone="Asia/Shanghai" \
+    -Duser.language="zh" \
+    -Duser.country="CN" \
+    -Djava.security.egd=file:/dev/./urandom \
+    -Djava.io.tmpdir=${APPLICATION_TMP_DIR} \
+    -classpath "${APPLICATION_JAR}" \
+    -Dloader.path=${APPLICATION_EXT_JAR_DIR} \
+    org.springframework.boot.loader.PropertiesLauncher \
+    --spring.profiles.active=${ACTIVE_PROFILES} \
+    --spring.pid.file=${APPLICATION_PID_FILE} \
+    --spring.pid.fail-on-write-error=true \
+    --logging.file.path=${APPLICATION_LOG_DIR} \
+    --logging.file.name=playground
+KillSignal=15
+SuccessExitStatus=143
+ExecStopPost=/bin/rm -rf ${APPLICATION_TMP_DIR}/
+
+[Install]
+WantedBy=multi-user.target

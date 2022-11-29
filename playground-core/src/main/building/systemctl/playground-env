@@ -1,0 +1,10 @@
+# 应用
+APPLICATION_JAR=/opt/playground/playground.jar
+APPLICATION_TMP_DIR=/opt/playground/tmp/
+APPLICATION_LOG_DIR=/opt/playground/log/
+APPLICATION_DATA_DIR=/opt/playground/data/
+APPLICATION_EXT_JAR_DIR=/opt/playground/lib/
+APPLICATION_PID_FILE=/opt/playground/pid
+
+# SpringBoot
+ACTIVE_PROFILES=prod

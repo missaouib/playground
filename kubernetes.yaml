@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: playground
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: local-harbor
+  namespace: playground
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: "eyJhdXRocyI6eyIxOTIuMTY4LjEwLjExMCI6eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiIsImF1dGgiOiJZV1J0YVc0NllXUnRhVzQ9In19fQ=="
+---
+
+apiVersion: v1
+kind: ServiceAccount
+imagePullSecrets:
+  - name: local-harbor
+metadata:
+  namespace: playground
+  name: default
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playground-core
+  namespace: playground
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: playground-core
+  paused: false
+  minReadySeconds: 20
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: playground-core
+    spec:
+      serviceAccountName: default
+      volumes:
+        - name: log
+          emptyDir: { }
+      restartPolicy: Always
+      containers:
+        - name: core
+          image: "yingzhuo/playground:latest"
+          imagePullPolicy: Always
+          command:
+            - "/bin/sh"
+            - "/bin/entrypoint.sh"
+          env:
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: "docker"
+          readinessProbe:
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+            periodSeconds: 10
+            httpGet:
+              scheme: HTTP
+              path: "/actuator/health"
+              port: 8080
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: log
+              mountPath: "/opt/log/"
+              readOnly: false
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: playground-core
+  namespace: playground
+spec:
+  selector:
+    app: playground-core
+  type: NodePort
+  ports:
+    - name: http
+      targetPort: 8080
+      port: 8080
+      nodePort: 16666

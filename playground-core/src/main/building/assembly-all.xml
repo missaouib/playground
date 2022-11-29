@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/ASSEMBLY/2.1.1"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 http://maven.apache.org/xsd/assembly-2.1.1.xsd">
+
+    <!--
+    本文件被maven插件: org.apache.maven.plugins:maven-assembly-plugin 使用
+    -->
+
+    <id>all</id>
+
+    <formats>
+        <format>tgz</format>
+    </formats>
+
+    <includeBaseDirectory>true</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <includes>
+                <include>*.jar</include>
+                <include>*.jar.original</include>
+            </includes>
+            <outputDirectory>systemctl</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.basedir}/src/main/building/systemctl</directory>
+            <includes>
+                <include>*.service</include>
+                <include>playground-env</include>
+                <include>*.conf</include>
+            </includes>
+            <outputDirectory>systemctl</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <includes>
+                <include>${dockerimage.tarball}</include>
+            </includes>
+            <outputDirectory>dockerimage</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>${helper.build.root}</directory>
+            <includes>
+                <include>docker-compose.y*ml</include>
+                <include>kubernetes.y*ml</include>
+            </includes>
+            <outputDirectory>dockerimage</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>${helper.build.root}</directory>
+            <includes>
+                <include>LICENSE*</include>
+                <include>README*</include>
+                <include>NOTICE*</include>
+            </includes>
+            <outputDirectory>.</outputDirectory>
+            <fileMode>0755</fileMode>
+        </fileSet>
+    </fileSets>
+
+</assembly>

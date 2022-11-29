@@ -1,0 +1,15 @@
+# MacOS
+.DS_Store
+
+# git
+.git/
+.gitkeep
+
+# docker engine
+.dockerignore
+Dockerfile
+
+# useless files
+*.jar.original
+*-javadoc.jar
+*-sources.jar

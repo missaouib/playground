@@ -1,0 +1,61 @@
+= playground
+
+image:https://img.shields.io/badge/License-Apache%202.0-red.svg[link="http://www.apache.org/licenses/LICENSE-2.0"]
+
+SpringBoot及SpringFramework演示或实验环境。 +
+(这个项目没有什么好看的，不要浪费你的时间。)
+
+== 需求
+
+* [red]#Java 17+#
+* [red]#SpringFramework 6.0.0+#
+* [red]#SpringBoot 3.0.0+#
+* [red]#SpringSecurity 6.0.0+#
+
+== 构建本项目
+
+[,bash]
+----
+make package
+----
+
+== 官方文档
+
+* `Spring` 系
+** link:https://docs.spring.io/spring-framework/docs/current/reference/html/[SpringFramework]
+** link:https://docs.spring.io/spring-boot/docs/current/reference/html/[SpringBoot]
+** link:https://docs.spring.io/spring-security/reference/index.html[SpringSecurity]
+
+* `AsciiDoc`
+** link:https://docs.asciidoctor.org/asciidoc/latest/[AsciiDoc]
+
+== 参考
+
+* `Apache Maven` 常用插件及配置
+** link:{docdir}/pom.xml[pom.xml (root)]
+** link:{docdir}/playground-core/pom.xml[pom.xml (submodule)]
+
+* `SpringBoot` 主配置
+** link:{docdir}/playground-core/src/main/resources/application.yml[application.yml]
+
+* `Docker` 相关技术
+** link:{docdir}/playground-core/src/main/building/docker/Dockerfile[Dockerfile]
+** link:{docdir}/playground-core/src/main/building/jar-layers.xml[分层打包技术配置]
+** link:{docdir}/pom.xml[maven spring-boot-maven-plugin]
+** link:{docdir}/docker-compose.yml[docker-compose.yml]
+
+* `logback` 常用配置
+** link:{docdir}/playground-core/src/main/resources/logback-spring.xml[logback-spring.xml]
+** link:{docdir}/playground-include/src/main/java/com/github/yingzhuo/playground/include/logback/logback-spring-dev.xml[logback.xml (dev环境)]
+** link:{docdir}/playground-include/src/main/java/com/github/yingzhuo/playground/include/logback/logback-spring-prod.xml[logback.xml (prod环境)]
+
+* `AsciiDoc` 常用语法
+** link:{docdir}/README.adoc[本文]
+
+== 许可证
+
+* link:{docdir}/LICENSE[Apache 2]
+
+== 作者
+
+* mailto:yingzhor@gmail.com[应卓]
