@@ -46,7 +46,7 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: "30s"
   messages:
-    basename: i18n/message,i18n/be
+    basename: config/i18n/message
     use-code-as-default-message: false
     cache-duration: 3600s
     fallback-to-system-locale: true

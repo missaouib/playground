@@ -4,6 +4,8 @@ import com.github.yingzhuo.playground.controller.valueobject.LoginVO;
 import com.github.yingzhuo.playground.include.exception.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +32,7 @@ public class SecurityController {
     private final UserDetailsManager userDetailsManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenFactory tokenFactory;
+//    private final MessageSourceAccessor messageSource;
 
     @PostMapping("/login")
     public Json login(@Validated @RequestBody LoginVO vo, BindingResult bindingResult) {

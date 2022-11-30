@@ -24,6 +24,6 @@ class MiscController(private val miscService: MiscService) {
     @GetMapping("/ping")
     fun ping(): Json =
         Json.newInstance()
-            .payload("response", miscService.getPingResponse())
+            .payload("response", miscService.pingResponse)
 
 }

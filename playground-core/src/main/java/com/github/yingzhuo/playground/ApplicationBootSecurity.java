@@ -119,6 +119,7 @@ public class ApplicationBootSecurity {
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/security/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/actuator", "/actuator/*").permitAll()
+                .requestMatchers(HttpMethod.GET, "/test").permitAll()
                 .anyRequest().hasRole("USER");
 
         return http.build();
