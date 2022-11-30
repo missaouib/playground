@@ -69,10 +69,8 @@ spring:
   flyway:
     enabled: false
   security:
-    user:
-      name: "root"
-      password: "{noop}root"
-      roles: [ "ROOT", "USER" ]
+    filter:
+      order: -200
 
 server:
   port: 8080

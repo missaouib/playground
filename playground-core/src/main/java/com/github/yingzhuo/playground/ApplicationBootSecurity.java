@@ -15,7 +15,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import spring.turbo.module.security.encoder.EncodingIds;
 import spring.turbo.module.security.encoder.PasswordEncoderFactories;
@@ -131,6 +134,22 @@ public class ApplicationBootSecurity {
                 .debug(false)
                 .ignoring()
                 .requestMatchers(HttpMethod.GET, "/favicon.ico");
+    }
+
+    @Bean
+    public UserDetailsManager userDetailsManager() {
+        return new InMemoryUserDetailsManager(
+                User.builder()
+                        .username("root")
+                        .password("{noop}root")
+                        .roles("ROOT", "USER")
+                        .build(),
+                User.builder()
+                        .username("actuator")
+                        .password("{noop}actuator")
+                        .roles("ACTUATOR")
+                        .build()
+        );
     }
 
 }

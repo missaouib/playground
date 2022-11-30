@@ -3,6 +3,7 @@ package com.github.yingzhuo.playground.security;
 import jakarta.servlet.Filter;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import spring.turbo.module.security.filter.HumanReadableRequestLoggingFilter;
 import spring.turbo.module.security.filter.RequestLoggingFilterFactory;
@@ -18,7 +19,8 @@ public class RequestLoggingFilterProvider implements RequestLoggingFilterFactory
         filter.setSkipRequestMatcher(
                 RequestMatcherBuilder.newInstance()
                         .header(HttpHeaders.USER_AGENT, "^.*kube.*$")
-                        .unique()
+                        .antPath("/actuator/**", HttpMethod.GET)
+                        .any()
         );
         return filter;
     }
