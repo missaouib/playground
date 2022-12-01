@@ -137,16 +137,16 @@ public class ApplicationBootSecurity {
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager() {
+    public UserDetailsManager userDetailsManager(PasswordEncoder encoder) {
         return new InMemoryUserDetailsManager(
                 User.builder()
                         .username("root")
-                        .password("{noop}root")
+                        .password(encoder.encode("root"))
                         .roles("ROOT", "USER")
                         .build(),
                 User.builder()
                         .username("actuator")
-                        .password("{noop}actuator")
+                        .password(encoder.encode("actuator"))
                         .roles("ACTUATOR")
                         .build()
         );
