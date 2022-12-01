@@ -200,9 +200,10 @@
                 <configuration>
                     <archive>
                         <index>true</index>
+                        <addMavenDescriptor>false</addMavenDescriptor>
                         <manifestEntries>
                             <Start-Class>com.github.yingzhuo.playground.ApplicationBoot</Start-Class>
-                            <Loader-Path>/etc/playground/lib/,/opt/playground/lib/,/tmp/</Loader-Path>
+                            <Loader-Path>/etc/playground/lib/,/opt/playground/lib/</Loader-Path>
                             <Loader-System>false</Loader-System>
 
                             <Group-Id>${project.groupId}</Group-Id>
