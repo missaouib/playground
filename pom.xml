@@ -284,11 +284,6 @@
             </dependency>
             <dependency>
                 <groupId>com.github.yingzhuo</groupId>
-                <artifactId>spring-turbo-module-jackson</artifactId>
-                <version>${spring.turbo.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.yingzhuo</groupId>
                 <artifactId>spring-turbo-module-security</artifactId>
                 <version>${spring.turbo.version}</version>
             </dependency>
@@ -300,6 +295,11 @@
             <dependency>
                 <groupId>com.github.yingzhuo</groupId>
                 <artifactId>spring-turbo-module-data-accessing</artifactId>
+                <version>${spring.turbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.yingzhuo</groupId>
+                <artifactId>spring-turbo-module-queryselector</artifactId>
                 <version>${spring.turbo.version}</version>
             </dependency>
 
@@ -459,6 +459,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.12.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>1.10.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>

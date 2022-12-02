@@ -1,3 +1,6 @@
+# 环境
+JAVA_HOME=/usr/local/jdk-17/
+
 # 应用
 APPLICATION_JAR=/opt/playground/playground.jar
 APPLICATION_TMP_DIR=/opt/playground/tmp/
@@ -7,4 +10,5 @@ APPLICATION_EXT_JAR_DIR=/opt/playground/lib/
 APPLICATION_PID_FILE=/opt/playground/pid
 
 # SpringBoot
+DEBUG=false
 ACTIVE_PROFILES=prod
