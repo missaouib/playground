@@ -35,8 +35,9 @@ make package
 ** link:{docdir}/pom.xml[pom.xml (root)]
 ** link:{docdir}/playground-core/pom.xml[pom.xml (submodule)]
 
-* `SpringBoot` 主配置
-** link:{docdir}/playground-core/src/main/resources/application.yml[application.yml]
+* `SpringBoot` 相关
+** link:{docdir}/playground-core/src/main/resources/application.yml[application.yml (主配置)]
+** link:https://docs.spring.io/spring-boot/docs/current/reference/html/executable-jar.html#appendix.executable-jar.property-launcher[核心应用程序启动器 PropertiesLauncher]
 
 * `Docker` 相关技术
 ** link:{docdir}/playground-core/src/main/building/docker/Dockerfile[Dockerfile]
