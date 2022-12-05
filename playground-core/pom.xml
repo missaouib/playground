@@ -205,22 +205,16 @@
                     <archive>
                         <index>true</index>
                         <addMavenDescriptor>false</addMavenDescriptor>
+                        <manifest>
+                            <addClasspath>false</addClasspath>
+                            <addDefaultEntries>true</addDefaultEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>
+                            <addExtensions>false</addExtensions>
+                        </manifest>
                         <manifestEntries>
                             <Start-Class>com.github.yingzhuo.playground.ApplicationBoot</Start-Class>
-                            <Loader-Path>/etc/playground/lib/,/opt/playground/lib/</Loader-Path>
-                            <Loader-System>false</Loader-System>
-
-                            <Group-Id>${project.groupId}</Group-Id>
-                            <Artifact-Id>${project.artifactId}</Artifact-Id>
-                            <Version>${project.version}</Version>
-                            <Packaging>${project.packaging}</Packaging>
-
-                            <Name>${project.artifactId}</Name>
-                            <Implementation-Title>This is demo application of spring-boot</Implementation-Title>
-                            <Implementation-Vendor>应卓 &lt;yingzhor@gmail.com&gt;</Implementation-Vendor>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Sealed>false</Sealed>
-                            <Created-By>Apache Maven ${helper.build.mavenversion}</Created-By>
                         </manifestEntries>
                     </archive>
                     <skip>false</skip>
