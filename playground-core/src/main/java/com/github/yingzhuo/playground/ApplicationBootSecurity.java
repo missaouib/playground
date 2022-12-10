@@ -25,21 +25,15 @@ import spring.turbo.module.security.encoder.PasswordEncoderFactories;
 import spring.turbo.module.security.exception.SecurityExceptionHandler;
 import spring.turbo.module.security.jwt.AlgorithmFactory;
 import spring.turbo.module.security.jwt.SM2AlgorithmFactory;
+import spring.turbo.module.security.token.BasicTokenResolver;
+import spring.turbo.module.security.token.TokenResolver;
 import spring.turbo.util.propertysource.YamlPropertySourceFactory;
-import spring.turbo.webmvc.token.BasicTokenResolver;
-import spring.turbo.webmvc.token.TokenResolver;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(
-        prePostEnabled = true,
-        securedEnabled = true,
-        jsr250Enabled = true
-)
-@EnableConfigurationProperties({
-        SM2KeyPairProperties.class
-})
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableConfigurationProperties({SM2KeyPairProperties.class})
 @RequiredArgsConstructor
 @PropertySource(value = "classpath:config/sm2.yaml", factory = YamlPropertySourceFactory.class)
 public class ApplicationBootSecurity {
@@ -52,10 +46,7 @@ public class ApplicationBootSecurity {
     @Primary
     @Bean(name = "primaryTokenResolver")
     public TokenResolver tokenResolver() {
-        return TokenResolver.builder()
-                .bearerToken()
-                .fromHttpHeader("X-Jwt-Token")
-                .build();
+        return TokenResolver.builder().bearerToken().fromHttpHeader("X-Jwt-Token").build();
     }
 
     @Bean(name = "basicTokenResolver")
@@ -77,79 +68,50 @@ public class ApplicationBootSecurity {
         http.cors();
 
         // disabled
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // disabled
-        http.csrf()
-                .disable();
+        http.csrf().disable();
 
         // disabled
-        http.httpBasic()
-                .disable();
+        http.httpBasic().disable();
 
         // disabled
-        http.jee()
-                .disable();
+        http.jee().disable();
 
         // disabled
-        http.formLogin()
-                .disable();
+        http.formLogin().disable();
 
         // disabled
-        http.x509()
-                .disable();
+        http.x509().disable();
 
         // disabled
-        http.logout()
-                .disable();
+        http.logout().disable();
 
         // disabled
-        http.rememberMe()
-                .disable();
+        http.rememberMe().disable();
 
         // disabled
-        http.requestCache()
-                .disable();
+        http.requestCache().disable();
 
         // enabled
         final ApplicationContext applicationContext = http.getSharedObject(ApplicationContext.class);
         final SecurityExceptionHandler exceptionHandler = applicationContext.getBean(SecurityExceptionHandler.class);
-        http.exceptionHandling()
-                .authenticationEntryPoint(exceptionHandler)
-                .accessDeniedHandler(exceptionHandler);
+        http.exceptionHandling().authenticationEntryPoint(exceptionHandler).accessDeniedHandler(exceptionHandler);
 
-        http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/security/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/actuator", "/actuator/*").permitAll()
-                .requestMatchers(HttpMethod.GET, "/test/*").permitAll()
-                .anyRequest().hasRole("USER");
+        http.authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/security/login").permitAll().requestMatchers(HttpMethod.GET, "/actuator", "/actuator/*").permitAll().requestMatchers(HttpMethod.GET, "/test/*").permitAll().anyRequest().hasRole("USER");
 
         return http.build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web
-                .debug(false)
-                .ignoring()
-                .requestMatchers(HttpMethod.GET, "/favicon.ico");
+        return web -> web.debug(false).ignoring().requestMatchers(HttpMethod.GET, "/favicon.ico");
     }
 
     @Bean
     public UserDetailsManager userDetailsManager(PasswordEncoder encoder) {
-        return new InMemoryUserDetailsManager(
-                User.builder()
-                        .username("root")
-                        .password(encoder.encode("root"))
-                        .roles("ROOT", "USER")
-                        .build(),
-                User.builder()
-                        .username("actuator")
-                        .password(encoder.encode("actuator"))
-                        .roles("ACTUATOR")
-                        .build()
-        );
+        return new InMemoryUserDetailsManager(User.builder().username("root").password(encoder.encode("root")).roles("ROOT", "USER").build(), User.builder().username("actuator").password(encoder.encode("actuator")).roles("ACTUATOR").build());
     }
 
 }
