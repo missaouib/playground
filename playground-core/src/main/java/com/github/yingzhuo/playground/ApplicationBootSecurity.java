@@ -2,14 +2,15 @@ package com.github.yingzhuo.playground;
 
 import com.github.yingzhuo.playground.config.SM2KeyPairProperties;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -23,7 +24,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -44,6 +44,8 @@ import spring.turbo.module.security.token.BasicTokenResolver;
 import spring.turbo.module.security.token.TokenResolver;
 import spring.turbo.util.propertysource.YamlPropertySourceFactory;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -55,7 +57,6 @@ import java.util.function.Supplier;
         jsr250Enabled = true
 )
 @EnableConfigurationProperties(SM2KeyPairProperties.class)
-@RequiredArgsConstructor
 @PropertySource(value = "classpath:config/sm2.yaml", factory = YamlPropertySourceFactory.class)
 public class ApplicationBootSecurity {
 
@@ -161,6 +162,7 @@ public class ApplicationBootSecurity {
         final var permitAll = new OrRequestMatcher(
                 builder.pattern(HttpMethod.GET, "/favicon.ico"),
                 builder.pattern(HttpMethod.GET, "/static/*"),
+                builder.pattern(HttpMethod.GET, "/resource/*"),
                 builder.pattern(HttpMethod.POST, "/security/login")
         );
         final var permitAllManager = new AuthorizationManager<RequestAuthorizationContext>() {
@@ -180,16 +182,17 @@ public class ApplicationBootSecurity {
         actuatorManager.setRoleHierarchy(roleHierarchy);
 
         // -------------------------------------------------------------------------------------------------------------
-        // 需要用户角色
-        final var any = AnyRequestMatcher.INSTANCE;
-        final var anyManager = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("USER");
-        anyManager.setRoleHierarchy(roleHierarchy);
+        // 其他
+        final var other = AnyRequestMatcher.INSTANCE;
+        final var otherManager = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("USER");
+        otherManager.setRoleHierarchy(roleHierarchy);
 
-        final AuthorizationManager<HttpServletRequest> manager = RequestMatcherDelegatingAuthorizationManager.builder()
-                .add(permitAll, permitAllManager)
-                .add(actuator, actuatorManager)
-                .add(any, anyManager)
-                .build();
+        final AuthorizationManager<HttpServletRequest> manager =
+                RequestMatcherDelegatingAuthorizationManager.builder()
+                        .add(permitAll, permitAllManager)
+                        .add(actuator, actuatorManager)
+                        .add(other, otherManager)
+                        .build();
 
         return (auth, object) -> manager.check(auth, object.getRequest());
     }
@@ -206,26 +209,14 @@ public class ApplicationBootSecurity {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web
-                .debug(false)
-                .ignoring().requestMatchers(HttpMethod.GET, "/favicon.ico");
+                .debug(false);
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager(PasswordEncoder encoder) {
-        return new InMemoryUserDetailsManager(
-                User.builder()
-                        .username("root")
-                        .password(encoder.encode("root"))
-                        .roles("ROOT").build(),
-                User.builder()
-                        .username("actuator")
-                        .password(encoder.encode("actuator"))
-                        .roles("ACTUATOR").build(),
-                User.builder()
-                        .username("user")
-                        .password(encoder.encode("user"))
-                        .roles("USER").build()
-        );
+    public UserDetailsManager userDetailsManager(@Value("classpath:config/users.properties") Resource resource) throws IOException {
+        final var properties = new Properties();
+        properties.load(resource.getInputStream());
+        return new InMemoryUserDetailsManager(properties);
     }
 
 }
