@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="root">{noop}root,ROLE_ROOT,enabled</entry>
+    <entry key="actuator">{noop}actuator,ROLE_ACTUATOR,enabled</entry>
+    <entry key="user">{noop}user,ROLE_USER,enabled</entry>
+</properties>

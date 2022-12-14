@@ -203,9 +203,9 @@ public class ApplicationBootSecurity {
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager(@Value("classpath:config/users.properties") Resource resource) throws IOException {
+    public UserDetailsManager userDetailsManager(@Value("classpath:config/users.xml") Resource resource) throws IOException {
         final var properties = new Properties();
-        properties.load(resource.getInputStream());
+        properties.loadFromXML(resource.getInputStream());
         return new InMemoryUserDetailsManager(properties);
     }
 
