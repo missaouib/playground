@@ -17,7 +17,6 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,7 +27,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -136,17 +134,9 @@ public class ApplicationBootSecurity {
                 .accessDeniedHandler(exceptionHandler);
 
         // 鉴权
-        http.authorizeHttpRequests(
-                (authorize) -> {
-                    authorize.withObjectPostProcessor(new ObjectPostProcessor<AuthorizationFilter>() {
-                        @Override
-                        public <O extends AuthorizationFilter> O postProcess(O filter) {
-                            return filter;
-                        }
-                    });
-                    authorize.anyRequest().access(authorizationManager);
-                }
-        );
+        http.authorizeHttpRequests()
+                .anyRequest()
+                .access(authorizationManager);
 
         return http.build();
     }
