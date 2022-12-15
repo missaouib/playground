@@ -1,9 +1,9 @@
 package com.github.yingzhuo.playground;
 
 import com.github.yingzhuo.playground.config.SM2KeyPairProperties;
+import com.github.yingzhuo.playground.config.UsersPropertiesFile;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -145,15 +145,15 @@ public class ApplicationBootSecurity {
     public AuthorizationManager<RequestAuthorizationContext> requestAuthorizationContextAuthorizationManager(
             HandlerMappingIntrospector introspector,
             RoleHierarchy roleHierarchy) {
-        final var builder = new MvcRequestMatcher.Builder(introspector);
+        final var requestMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         // -------------------------------------------------------------------------------------------------------------
         // 允许全部
         final var permitAll = new OrRequestMatcher(
-                builder.pattern(HttpMethod.GET, "/favicon.ico"),
-                builder.pattern(HttpMethod.GET, "/static/*"),
-                builder.pattern(HttpMethod.GET, "/resource/*"),
-                builder.pattern(HttpMethod.POST, "/security/login")
+                requestMatcherBuilder.pattern(HttpMethod.GET, "/favicon.ico"),
+                requestMatcherBuilder.pattern(HttpMethod.GET, "/static/*"),
+                requestMatcherBuilder.pattern(HttpMethod.GET, "/resource/*"),
+                requestMatcherBuilder.pattern(HttpMethod.POST, "/security/login")
         );
         final var permitAllManager = new AuthorizationManager<RequestAuthorizationContext>() {
             @Override
@@ -165,8 +165,8 @@ public class ApplicationBootSecurity {
         // -------------------------------------------------------------------------------------------------------------
         // actuator
         final var actuator = new OrRequestMatcher(
-                builder.pattern(HttpMethod.GET, "/actuator"),
-                builder.pattern(HttpMethod.GET, "/actuator/*")
+                requestMatcherBuilder.pattern(HttpMethod.GET, "/actuator"),
+                requestMatcherBuilder.pattern(HttpMethod.GET, "/actuator/*")
         );
         final var actuatorManager = AuthorityAuthorizationManager.<RequestAuthorizationContext>hasRole("ACTUATOR");
         actuatorManager.setRoleHierarchy(roleHierarchy);
@@ -203,7 +203,7 @@ public class ApplicationBootSecurity {
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager(@Value("classpath:config/users.xml") Resource resource) throws IOException {
+    public UserDetailsManager userDetailsManager(@UsersPropertiesFile Resource resource) throws IOException {
         final var properties = new Properties();
         properties.loadFromXML(resource.getInputStream());
         return new InMemoryUserDetailsManager(properties);
