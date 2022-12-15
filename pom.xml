@@ -36,7 +36,7 @@
         <spring.turbo.version>2.0.4-SNAPSHOT</spring.turbo.version>
         <jackson.version>2.14.1</jackson.version>
         <micrometer.version>1.10.2</micrometer.version>
-        <slf4j.version>2.0.5</slf4j.version>
+        <slf4j.version>2.0.6</slf4j.version>
         <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
 
